@@ -2,14 +2,19 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "million": "^1.12.0-beta.0"
+    "fast-xml-parser": "^4.0.9",
+    "million": "^1.12.0-beta.0",
+    "twind": "^0.16.17"
   },
   "devDependencies": {
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "typescript": "^4.7.4",
     "vite": "^3.0.2"
   }
 }
