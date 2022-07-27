@@ -214,7 +214,7 @@ const Textarea = () => {
           char.match(
               /\p{Extended_Pictographic}/gu,
             )
-            ? "M"
+            ? "◯"
             : char
         ).join("")
       }`;
