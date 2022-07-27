@@ -105,7 +105,7 @@ const Textarea = () => {
 
   const [value, setValue] = useState(
     document.querySelector("textarea")?.value ??
-      localStorage.getItem("value") ?? "",
+      localStorage.getItem("value") ?? "<size=50>😏</size>",
   );
   const isValid = useMemo(
     () =>
