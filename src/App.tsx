@@ -207,9 +207,9 @@ const Textarea = () => {
 
       const newCode = `<color=#0000><size=02${".".repeat(Math.max(0, n))}${
         array.slice(firstEmoji, lastEmoji + 1).map((char) =>
-          char.match(/\p{Extended_Pictographic}/gu) ? char : "."
+          char.match(/\p{Extended_Pictographic}/gu) ? char : "\u200b"
         ).join("")
-      }${".".repeat(Math.max(0, -n))}</color>${
+      }${"\u200b".repeat(Math.max(0, -n))}</color>${
         Array.from(value).map((char) =>
           char.match(
               /\p{Extended_Pictographic}/gu,
