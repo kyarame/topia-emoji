@@ -205,7 +205,7 @@ const Textarea = () => {
 
       const n = lastEmoji - 7;
 
-      const newCode = `<color=#0000><size=02${".".repeat(Math.max(0, n))}${
+      const newCode = `<color=#0000><size=02${"\u200b".repeat(Math.max(0, n))}${
         array.slice(firstEmoji, lastEmoji + 1).map((char) =>
           char.match(/\p{Extended_Pictographic}/gu) ? char : "\u200b"
         ).join("")
