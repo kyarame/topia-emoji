@@ -197,7 +197,7 @@ const Textarea = () => {
         return;
       }
 
-      const array = Array.from(textContent);
+      const array = Array.from(textContent).filter((x) => x != "\ufe0f");
       console.log(array);
       const firstEmoji = array.findIndex((char) =>
         char.match(singleEmojiRegex)
@@ -207,8 +207,8 @@ const Textarea = () => {
 
       const n = lastEmoji - 7;
 
-      const joiner = "\u200b"
-      // const joiner = ".";
+      const joiner = "\u200b";
+      //const joiner = ".";
       const newCode = `<color=#0000><size=02${joiner.repeat(Math.max(0, n))}${
         array.slice(firstEmoji, lastEmoji + 1).map((char) =>
           char.match(/\p{Extended_Pictographic}/gu) ? char : joiner
