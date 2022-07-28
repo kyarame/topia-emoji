@@ -39,3 +39,9 @@ a:hover {
   display: grid;
   place-items: center;
 }
+
+#__preview img {
+  display: inline-block;
+  height: 1.1em;
+  vertical-align: bottom;
+}
