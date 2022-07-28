@@ -223,11 +223,7 @@ const Textarea = () => {
                 c.match(
                     /\p{Extended_Pictographic}/gu,
                   )
-                  ? "◯️" +
-                    (log(arr[index]).includes("\ufe0f") ||
-                        arr[index + 1] === "\ufe0f"
-                      ? joiner
-                      : "")
+                  ? "◯️"
                   : joiner
               )
               : char
