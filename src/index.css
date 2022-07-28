@@ -43,5 +43,6 @@ a:hover {
 #__preview img {
   display: inline-block;
   height: 1.1em;
-  vertical-align: bottom;
+  vertical-align: text-bottom;
+  transform: translateY(-0.1em);
 }
