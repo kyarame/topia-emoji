@@ -72,7 +72,7 @@ const Code = () => {
 
   return (
     <div
-      className={tw`px-4 space-y-1 py-3 bg-${
+      className={tw`relative px-4 space-y-1 py-3 bg-${
         copied ? "green(100 hover:200)" : "gray(hover:100)"
       } transition-colors cursor-pointer`}
       onClick={() => {
@@ -84,6 +84,7 @@ const Code = () => {
         copiedCount.current += 1;
         const count = copiedCount.current;
         setCopied(true);
+
         setTimeout(() => {
           if (copiedCount.current === count) {
             setCopied(false);
@@ -92,6 +93,12 @@ const Code = () => {
       }}
     >
       <h2 className={tw`text-xs font-bold text-gray-500`}>弾幕コード（タップしてコピー）</h2>
+      <h2
+        key="__characterCount"
+        id="__characterCount"
+        className={tw`absolute top-2 right-4 text-xs text-gray-500`}
+      >
+      </h2>
       <div
         id="__code"
         className={tw`w-full break-all font-mono`}
@@ -181,52 +188,65 @@ const Textarea = () => {
   function renderCode(value: string) {
     const preview = document.getElementById("__preview");
     const code = document.getElementById("__code");
-    if (preview && code) {
-      if (!value.includes("<size")) {
-        code.textContent = value;
-        return;
+    (() => {
+      if (preview && code) {
+        if (!value.includes("<size")) {
+          code.textContent = value;
+          return;
+        }
+        const textContent = preview.textContent ?? "";
+
+        const match = Array.from(
+          textContent.matchAll(singleEmojiRegex),
+        );
+
+        if (!match.length) {
+          code.textContent = value;
+          return;
+        }
+
+        const array = Array.from(textContent).filter((x) => x != "\ufe0f");
+        console.log(array);
+        const firstEmoji = array.findIndex((char) =>
+          char.match(singleEmojiRegex)
+        );
+        const lastEmoji = array.length - 1 -
+          [...array].reverse().findIndex((char) =>
+            char.match(singleEmojiRegex)
+          );
+
+        const n = lastEmoji - 7;
+
+        const joiner = "\u200b";
+        //const joiner = ".";
+        const newCode = `<color=#0000><size=02${joiner.repeat(Math.max(0, n))}${
+          array.slice(firstEmoji, lastEmoji + 1).map((char) =>
+            char.match(/\p{Extended_Pictographic}/gu) ? char : joiner
+          ).join("")
+        }${joiner.repeat(Math.max(0, -n))}</color>${
+          log(
+            Array.from(value).flatMap((char, index, arr) =>
+              char.match(/\p{Extended_Pictographic}/gu)
+                ? log([...char]).map((c) =>
+                  c.match(/\p{Extended_Pictographic}/gu) ? "◯️" : joiner
+                )
+                : char
+            ),
+          ).join("")
+        }`;
+
+        code.textContent = newCode;
+        (window as any).twemoji.parse(preview);
       }
-      const textContent = preview.textContent ?? "";
-
-      const match = Array.from(
-        textContent.matchAll(singleEmojiRegex),
-      );
-
-      if (!match.length) {
-        code.textContent = value;
-        return;
-      }
-
-      const array = Array.from(textContent).filter((x) => x != "\ufe0f");
-      console.log(array);
-      const firstEmoji = array.findIndex((char) =>
-        char.match(singleEmojiRegex)
-      );
-      const lastEmoji = array.length - 1 -
-        [...array].reverse().findIndex((char) => char.match(singleEmojiRegex));
-
-      const n = lastEmoji - 7;
-
-      const joiner = "\u200b";
-      //const joiner = ".";
-      const newCode = `<color=#0000><size=02${joiner.repeat(Math.max(0, n))}${
-        array.slice(firstEmoji, lastEmoji + 1).map((char) =>
-          char.match(/\p{Extended_Pictographic}/gu) ? char : joiner
-        ).join("")
-      }${joiner.repeat(Math.max(0, -n))}</color>${
-        log(
-          Array.from(value).flatMap((char, index, arr) =>
-            char.match(/\p{Extended_Pictographic}/gu)
-              ? log([...char]).map((c) =>
-                c.match(/\p{Extended_Pictographic}/gu) ? "◯️" : joiner
-              )
-              : char
-          ),
-        ).join("")
-      }`;
-
-      code.innerText = newCode;
-      (window as any).twemoji.parse(preview);
+    })();
+    const count = document.getElementById("__characterCount");
+    if (code && count) {
+      count.textContent = `${
+        Array.from(code.textContent ?? "").map((character) => {
+          const c = character.charCodeAt(0);
+          return c < 256 || (c > 0xff61 && c <= 0xff9f) ? 0.5 : 1;
+        }).reduce((a, b) => a + b, 0)
+      }字`;
     }
   }
 
