@@ -55,6 +55,7 @@ function App() {
       <div className={tw`px-4 space-y-1 py-3 text-white bg-gray-600`}>
         <h2 className={tw`text-xs font-bold text-gray-300`}>結果</h2>
         <div
+          key="__preview"
           id="__preview"
           className={tw`w-full break-all`}
           style={{ minHeight: "24px" }}
