@@ -500,7 +500,7 @@ const App = () => {
           copyToClipboard(prefixTags.join("") + tags.join(""));
         }}
       >
-        <div className="font-bold text-white/75 text-xs">
+        <div className="font-bold text-white/75 text-xs mb-3">
           プレビュー（タップして弾幕コピー）
         </div>
         <div className="w-full text-white">
